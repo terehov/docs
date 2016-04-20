@@ -1,2 +1,9 @@
 # docs
-:notebook: Docs and guides for graph.cool
+:notebook: Documentation for graph.cool
+
+## Development
+
+```sh
+npm install
+npm start
+```
