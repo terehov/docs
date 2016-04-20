@@ -21,19 +21,31 @@ description:
 
 ## Types
 
-- Built-in types
+In addition to the models you create for your project graph.cool has these build in types:
 
 #### String
 
+A string holds text. This is the type you would use for a users name, the content of a blog post or anything else that is best represented as text.
+
 #### Integer
+
+An integer is a number that can not have decimals. Use this to store values such as the weight of an ingredient required for a recipe or minimum age for an event.
 
 #### Float
 
+A float is a number that can have decimals. Use this to store values such as the price of an item in a store and teh result of complex calculations.
+
 #### Boolean
+
+A boolean can have the value True or Flase. This is useful to keep track of settings such as whether the user want to receive an email newsletter or if a recipe is appropriate for vegetarians.
 
 #### Enum
 
+Like a boolean an enum can have one of a predefined set of values. The difference is that you get to decide the possible values. For example you could specify how an article should be formatted by creating an enum with the possible values COMPACT, WIDE and COVER.
+
 #### ID
+
+All nodes in graph.cool are automatically assigned and id field of type ID. You use this value when quering specific nodes or adding nodes to connections.
 
 ## Permissions
 
@@ -102,6 +114,41 @@ If only the author of a blog post should be able to delete it you would create a
 > note: It is currently not possible to specify a path longer than 1 step. This limitation will be removed in the near future
 
 ## Connections
-
 - synonym: relations
-- connections (the general concept. That a connection is always created in both directions)
+
+If two things are related you can create a connection between them. If you are used to work with SQL databases you can think of a connection as a foreign key. Even if you are not used to work with databases I think you will find it straight forward to use connections in graph.cool.
+
+Let's look at an example. If you are creating a blog you could have two models: User and Post. To keep track of who wrote what post you you could have a author connection from Post to User:
+
+    Post > author > User
+
+Connections always goes in bot directions, so you would also have a connection from User to Post:
+
+    User > posts > Post
+
+As you can imagine the `author` connection will always contain the one User who wrote the Post. The `posts` connection on the other hand will contain all the Posts made by the User.
+
+Now, whenever you create a new post you will have to specify what User should be the author for that Post.
+
+connections are extremely useful when making [queries](simple-graphql-api.html#Queries). This is how you would get all Posts by a specific user:
+
+    {User(id: "user1"){name, posts{title, text}}}
+
+returns:
+
+    { User: { 
+        name: "Johannes Schickling",
+        posts: [
+          {title: "Getting Started with GraphQL", text: "..."},
+          {title: "Using Relay with React Native", text: "..."}
+        ]
+      }
+    }
+
+Imagine you want to make it possible to like a Post. You can accomplish this very easily by creating a likedBy connection on Post:
+
+    Post > likedBy > User
+
+Now you can extend your query to include the names of Users who liked a Post:
+
+    {User(id: "user1"){name, posts{title, text, likedBy{name}}}}
