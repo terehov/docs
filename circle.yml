@@ -1,16 +1,7 @@
-machine:
-  node:
-    version: 0.12
-
-checkout:
-  post:
-    - git submodule update --init
+machine: node
 
 dependencies:
-  cache_directories:
-    - "site/node_modules"
   override:
-    - npm install -g hexo-cli
     - npm install
 
 test:
@@ -19,6 +10,6 @@ test:
 
 deployment:
   s3:
-    branch: /^(master|version-.*)/
+    branch: master
     commands:
       - npm run deploy
