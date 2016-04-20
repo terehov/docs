@@ -14,4 +14,6 @@ deployment:
   s3:
     branch: master
     commands:
+      - git config --global user.email "bot@graph.cool"
+      - git config --global user.name "Bot"
       - npm run deploy

@@ -19,6 +19,6 @@
   },
   "scripts": {
     "start": "hexo server -p 4567",
-    "deploy": "hexo deploy"
+    "deploy": "rm -rf .deploy_git public && hexo deploy"
   }
 }
