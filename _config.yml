@@ -99,3 +99,5 @@ deploy:
   type: git
   repository: https://github.com/graphcool/docs.git
   branch: gh-pages
+  name: graph.cool
+  email: bot@graph.cool
