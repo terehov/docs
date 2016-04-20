@@ -1,4 +1,6 @@
-machine: node
+machine:
+  node:
+    version: 5.6.0
 
 dependencies:
   override:
