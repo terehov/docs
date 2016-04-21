@@ -103,13 +103,17 @@ When creating a Related permission you specify a path to the user who should hav
 
 If you want to limit access to a users friends the path could ook like this:
 
-    User > friends
+```
+User > friends
+```
 
 Meaning that only if the current user is in the friends connection on the user being queried will the action be allowed.
 
 If only the author of a blog post should be able to delete it you would create a permission with the Delete action and the Related type and specify the following path:
 
-    Post > author
+```
+Post > author
+```
 
 > note: It is currently not possible to specify a path longer than 1 step. This limitation will be removed in the near future
 
@@ -120,11 +124,15 @@ If two things are related you can create a connection between them. If you are u
 
 Let's look at an example. If you are creating a blog you could have two models: User and Post. To keep track of who wrote what post you you could have a author connection from Post to User:
 
-    Post > author > User
+```
+Post > author > User
+```
 
 Connections always goes in bot directions, so you would also have a connection from User to Post:
 
-    User > posts > Post
+```
+User > posts > Post
+```
 
 As you can imagine the `author` connection will always contain the one User who wrote the Post. The `posts` connection on the other hand will contain all the Posts made by the User.
 
@@ -132,23 +140,31 @@ Now, whenever you create a new post you will have to specify what User should be
 
 connections are extremely useful when making [queries](simple-graphql-api.html#Queries). This is how you would get all Posts by a specific user:
 
-    {User(id: "user1"){name, posts{title, text}}}
+```
+{User(id: "user1"){name, posts{title, text}}}
+```
 
 returns:
 
-    { User: { 
-        name: "Johannes Schickling",
-        posts: [
-          {title: "Getting Started with GraphQL", text: "..."},
-          {title: "Using Relay with React Native", text: "..."}
-        ]
-      }
-    }
+```
+{ User: { 
+    name: "Johannes Schickling",
+    posts: [
+      {title: "Getting Started with GraphQL", text: "..."},
+      {title: "Using Relay with React Native", text: "..."}
+    ]
+  }
+}
+```
 
 Imagine you want to make it possible to like a Post. You can accomplish this very easily by creating a likedBy connection on Post:
 
-    Post > likedBy > User
+```
+Post > likedBy > User
+```
 
 Now you can extend your query to include the names of Users who liked a Post:
 
-    {User(id: "user1"){name, posts{title, text, likedBy{name}}}}
+```
+{User(id: "user1"){name, posts{title, text, likedBy{name}}}}
+```
