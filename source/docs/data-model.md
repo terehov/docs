@@ -12,7 +12,7 @@ Data in graph.cool is stored in models. If you are familiar with SQL databases y
 
 All graph.cool projects come with a predefined `User` model. You cannot delete the User model, but you can extend it to suit your needs.
 
-### Fields
+#### Fields
 
 All models have a default `id` field and the User model has 3 additional fields: `email`, `password` and `roles`.
 
@@ -22,7 +22,7 @@ When you set a password for the user it is stored in a cryptographically secure 
 
 The roles field is used in combination with [permissions](data-model.html#Permissions) and is useful if you have more than one kind of user in your application. For example admin users might be able to do some things that regular users shouldn't.
 
-### Mutations
+#### Mutations
 
 > See the [chapter on mutations](simple-graphql-api.html#Mutations) for a general introduction to mutations. This example is using the Simple GraphQL API
 
