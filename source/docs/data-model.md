@@ -4,20 +4,51 @@ order: 101
 description: 
 ---
 
-# Data Model
-
 ## Models
+
+Data in graph.cool is stored in models. If you are familiar with SQL databases you can think of a model as a database table. If you are not used to working with databases think of models as "things" in your application. If your application is a blog where people can write posts and comment on them you would probably need three models: User, Post and Comment.
 
 ### User Model
 
-- add fields (explain the types)
+All graph.cool projects come with a predefined `User` model. You cannot delete the User model, but you can extend it to suit your needs.
 
-- a special system model
-- create user (password, email)
-- signin user (password, email, token is returned)
+### Fields
 
-## Fields
+All models have a default `id` field and the User model has 3 additional fields: `email`, `password` and `roles`.
 
+The email field is used together with the password field to sign in a user of your application
+
+When you set a password for the user it is stored in a cryptographically secure way and it is impossible for you to retrieve the original password. If you query the password for a user you will get hashed version.
+
+The roles field is used in combination with [permissions](data-model.html#Permissions) and is useful if you have more than one kind of user in your application. For example admin users might be able to do some things that regular users shouldn't.
+
+### Mutations
+
+> See the [chapter on mutations](simple-graphql-api.html#Mutations) for a general introduction to mutations. This example is using the Simple GraphQL API
+
+To create a new user you can use the createUser mutation like this:
+
+```
+mutation {
+  createUser(email: "email@domain.com", password: "secret"){ id }
+}
+```
+
+To sign in a user you can use the signinUser mutation like this:
+
+```
+mutation {
+  signinUser(email: "email@domain.com", password: "secret"){ token }
+}
+```
+
+The returned token is a string that identifies the user. You should include this with all requests your application makes on behalf of the user. See the [Security chapter](security.html) for information about how to do this.
+
+If you are using the playground in the graph.cool dashboard you can change the token for your requests by selecting a user from the dropdown in the top right corner. This is useful for testing permissions and user specific queries. For example you can get the email of the current user like this:
+
+```
+{ user { email }}
+```
 
 ## Types
 
