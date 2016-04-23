@@ -12,8 +12,6 @@ timezone:
 versions:
   - '1'
 sidebar_categories:
-  null:
-    - index
   Documentation:
     - docs/getting-started
     - docs/data-model
@@ -28,10 +26,7 @@ content_root: source
 logo:
   desktop: /logo/large.png
   mobile: /logo/square.png
-nav_links:
-  graph.cool: http://www.graph.cool/
-  Blog: https://medium.com/graphcool
-  GitHub: https://github.com/graphcool
+
 favicon: /logo/square.png
 
 # API keys
