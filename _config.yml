@@ -24,8 +24,12 @@ sidebar_categories:
 github_repo: graphcool/docs
 content_root: source
 logo:
-  desktop: /logo/large.png
+  desktop: /logo/logodocs.svg
   mobile: /logo/square.png
+
+icon:
+  search: /logo/search.svg
+  github: /logo/github.svg
 
 favicon: /logo/square.png
 
