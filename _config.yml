@@ -12,8 +12,6 @@ timezone:
 versions:
   - '1'
 sidebar_categories:
-  null:
-    - index
   Documentation:
     - docs/getting-started
     - docs/data-model
@@ -26,17 +24,18 @@ sidebar_categories:
 github_repo: graphcool/docs
 content_root: source
 logo:
-  desktop: /logo/large.svg
-  mobile: /logo/square.svg
-nav_links:
-  graph.cool: http://www.graph.cool/
-  Blog: https://medium.com/graphcool
-  GitHub: https://github.com/graphcool
+  desktop: /logo/logodocs.svg
+  mobile: /logo/square.png
+
+icon:
+  search: /logo/search.svg
+  github: /logo/github.svg
+
 favicon: /logo/square.png
 
 # API keys
 apis:
-  segment: 
+  segment:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'

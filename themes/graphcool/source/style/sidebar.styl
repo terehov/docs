@@ -3,23 +3,34 @@
   border-right 1px solid #eee
   font-size 16px
   line-height 1.1em
+
   li
     margin-bottom .6em
+    padding-left  0
+
   a
     color #444
+    padding-left 22px
     &.current, &:hover
-      color #de4f4f
+      color #36ad64
     &.H2
       font-weight bold
 
+  > ul > li
+    margin-bottom 30px
+
   .categories > li > p
-    margin-top 1.5em
     border-top 1px solid #eee
     text-transform uppercase
-    padding-top 1.2em
+    padding-top 31px
+    padding-left 22px
     margin-bottom 1em
     color #999
     font-size 0.8em
+
+  .categories > li:first-child > p
+    border-top 0
+    line-height: 30px
 
   .sub-menu
     font-family 'ProximaNova-Regular'
@@ -28,7 +39,7 @@
     font-size 14px
     .active
       position relative
-      color #de4f4f
+      color #36ad64
       &:before
         content ""
         position absolute
