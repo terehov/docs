@@ -25,7 +25,7 @@ github_repo: graphcool/docs
 content_root: source
 logo:
   desktop: /logo/logodocs.svg
-  mobile: /logo/square.png
+  mobile: /logo/square.svg
 
 icon:
   search: /logo/search.svg
