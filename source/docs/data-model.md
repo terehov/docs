@@ -132,7 +132,7 @@ The Related permission type allows you to specify that only users who are connec
 
 When creating a Related permission you specify a path to the user who should have access from the node you are adding the permission for.
 
-If you want to limit access to a users friends the path could ook like this:
+If you want to limit access to a users friends the path could look like this:
 
 ```
 User > friends
