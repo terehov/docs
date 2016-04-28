@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Data Model | Graphcool Docs</title>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/style/main.css">
+    <link href="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" rel='stylesheet' type='text/css'>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id="wrap">
+  <div id="header">
+    <div id="site-nav">
+  <div class="header-container">
+    <a class="logo" href="/"><img src="/logo/logodocs.svg"/></a>
+    <img class="search" src="/logo/search.svg" />
+    <input class="search-flex" placeholder="Search docs" type="text" />
+    <a class="header-links" href="https://graph.cool/" target="_blank">Website</a>
+    <a href="https://www.github.com/graphcool" target="_blank"><img class="github" src="/logo/github.svg" /></a>
+    <a class="header-links" href="https://github.com/graphcool/" target="_blank">Github</a>
+
+  </div>
+
+  
+  
+</div>
+
+  </div>
+  <div id="sidebar">
+    <ul class="categories">
+  
+    <li>
+      
+        <p>Documentation</p>
+      
+      <ul class="menu-root">
+        
+          
+          <li>
+            <a href="getting-started.html" class="sidebar-link">
+              Getting Started
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="" class="sidebar-link current">
+              Data Model
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="simple-graphql-api.html" class="sidebar-link">
+              Simple GraphQL API
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="relay-api.html" class="sidebar-link">
+              Relay API
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="webhooks.html" class="sidebar-link">
+              Webhooks
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="security.html" class="sidebar-link">
+              Security
+            </a>
+          </li>
+        
+      </ul>
+    </li>
+  
+    <li>
+      
+        <p>Resources</p>
+      
+      <ul class="menu-root">
+        
+          
+          <li>
+            <a href="../resources/index.html" class="sidebar-link">
+              Examples
+            </a>
+          </li>
+        
+      </ul>
+    </li>
+  
+</ul>
+
+  </div>
+  <div id="content">
+    <h1>Data Model</h1>
+    <p class="edit-discuss-links">
+      <a href="https://github.com/graphcool/docs/tree/master/source/docs/data-model.md" target="_blank">Edit on GitHub</a>
+    </p>
+    <h2 id="Models"><a href="#Models" class="headerlink" title="Models"></a>Models</h2><p>Data in graph.cool is stored in models. If you are familiar with SQL databases you can think of a model as a database table. If you are not used to working with databases think of models as “things” in your application. If your application is a blog where people can write posts and comment on them you would probably need three models: User, Post and Comment.</p>
+<h3 id="User-Model"><a href="#User-Model" class="headerlink" title="User Model"></a>User Model</h3><p>All graph.cool projects come with a predefined <code>User</code> model. You cannot delete the User model, but you can extend it to suit your needs.</p>
+<h4 id="Fields"><a href="#Fields" class="headerlink" title="Fields"></a>Fields</h4><p>All models have a default <code>id</code> field and the User model has 3 additional fields: <code>email</code>, <code>password</code> and <code>roles</code>.</p>
+<p>The email field is used together with the password field to sign in a user of your application</p>
+<p>When you set a password for the user it is stored in a cryptographically secure way and it is impossible for you to retrieve the original password. If you query the password for a user you will get hashed version.</p>
+<p>The roles field is used in combination with <a href="data-model.html#Permissions">permissions</a> and is useful if you have more than one kind of user in your application. For example admin users might be able to do some things that regular users shouldn’t.</p>
+<h4 id="Mutations"><a href="#Mutations" class="headerlink" title="Mutations"></a>Mutations</h4><blockquote>
+<p>See the <a href="simple-graphql-api.html#Mutations">chapter on mutations</a> for a general introduction to mutations. This example is using the Simple GraphQL API</p>
+</blockquote>
+<p>To create a new user you can use the createUser mutation like this:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123;</span><br><span class="line">  <span class="selector-tag">createUser</span>(<span class="attribute">email</span>: <span class="string">"email@domain.com"</span>, <span class="attribute">password</span>: <span class="string">"secret"</span>)&#123; id &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>To sign in a user you can use the signinUser mutation like this:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123;</span><br><span class="line">  <span class="selector-tag">signinUser</span>(<span class="attribute">email</span>: <span class="string">"email@domain.com"</span>, <span class="attribute">password</span>: <span class="string">"secret"</span>)&#123; token &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The returned token is a string that identifies the user. You should include this with all requests your application makes on behalf of the user. See the <a href="security.html">Security chapter</a> for information about how to do this.</p>
+<p>If you are using the playground in the graph.cool dashboard you can change the token for your requests by selecting a user from the dropdown in the top right corner. This is useful for testing permissions and user specific queries. For example you can get the email of the current user like this:</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="keyword">user</span> <span class="title">&#123; email</span> &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h2><p>In addition to the models you create for your project graph.cool has these build in types:</p>
+<h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><p>A string holds text. This is the type you would use for a users name, the content of a blog post or anything else that is best represented as text.</p>
+<h4 id="Integer"><a href="#Integer" class="headerlink" title="Integer"></a>Integer</h4><p>An integer is a number that can not have decimals. Use this to store values such as the weight of an ingredient required for a recipe or minimum age for an event.</p>
+<h4 id="Float"><a href="#Float" class="headerlink" title="Float"></a>Float</h4><p>A float is a number that can have decimals. Use this to store values such as the price of an item in a store and teh result of complex calculations.</p>
+<h4 id="Boolean"><a href="#Boolean" class="headerlink" title="Boolean"></a>Boolean</h4><p>A boolean can have the value True or Flase. This is useful to keep track of settings such as whether the user want to receive an email newsletter or if a recipe is appropriate for vegetarians.</p>
+<h4 id="Enum"><a href="#Enum" class="headerlink" title="Enum"></a>Enum</h4><p>Like a boolean an enum can have one of a predefined set of values. The difference is that you get to decide the possible values. For example you could specify how an article should be formatted by creating an enum with the possible values COMPACT, WIDE and COVER.</p>
+<h4 id="ID"><a href="#ID" class="headerlink" title="ID"></a>ID</h4><p>All nodes in graph.cool are automatically assigned and id field of type ID. You use this value when quering specific nodes or adding nodes to connections.</p>
+<h2 id="Permissions"><a href="#Permissions" class="headerlink" title="Permissions"></a>Permissions</h2><blockquote>
+<p>For a high level overview of the graph.cool security system see <a href="security.html">Security</a></p>
+</blockquote>
+<ul>
+<li>synonym: ACL</li>
+</ul>
+<p>In graph.cool permissions are specified on individual fields. This allows you to specify that a users name should be public while her birthday should be private and her contact details only visible by friends.</p>
+<h3 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h3><p>You can specify permissions for 4 different actions. Read, Create, Update, Delete.</p>
+<h4 id="Read"><a href="#Read" class="headerlink" title="Read"></a>Read</h4><p>Returning the value of the field in a query</p>
+<h4 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h4><p>Setting the value of the field when creating a new node</p>
+<h4 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h4><p>Updating the value for an existing node</p>
+<h4 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h4><p>todo: what does this even mean? deleting a node vs a field value…</p>
+<h3 id="Permission-Types"><a href="#Permission-Types" class="headerlink" title="Permission Types"></a>Permission Types</h3><p>To specify who should be allowed to perform a certain action you use a combination of three permission types. Guest, Authenticated and Related. </p>
+<h4 id="Guest"><a href="#Guest" class="headerlink" title="Guest"></a>Guest</h4><p>Guest means that anyone can perform the action, even if they are not signed in to your application. If you are creating a blog you probably want to have a Read action with the Guest permission on all blog posts and comments.</p>
+<h4 id="Authentificated"><a href="#Authentificated" class="headerlink" title="Authentificated"></a>Authentificated</h4><p>Authenticated works almost like the Guest permission except users have to be signed in to your application. If you are creating an app that requires users to sign up you can use this permission type instead of Guest.</p>
+<p>In addition you can specify that this action is only available to users with a specific role. This is useful if you have more than one type of user in your application. For example you might want users with the MODERATOR role to be able to delete other users comments while normal users can only delete their own.</p>
+<blockquote>
+<p>note: It is currently not possible to add user roles in the dashboard ui. Please contact us in the <a href="https://slack.graph.cool/" target="_blank" rel="external">graph.cool slack group</a> so we can help you out!</p>
+</blockquote>
+<h4 id="Related"><a href="#Related" class="headerlink" title="Related"></a>Related</h4><blockquote>
+<p>This permission type is based on <a href="#Connections">connections</a> in your schema</p>
+</blockquote>
+<p>If you are used to thinking about security for traditional apis it can be helpful to forget all of that for a moment. If you have never thought about api security before you are in luck. This will be easy for you :-)</p>
+<p>The Related permission type allows you to specify that only users who are connected to the node in a certain way are allowed to perform the action. For example you could specify that only friends of a user can view their location or that only the author of a blog post can delete comments.</p>
+<p>When creating a Related permission you specify a path to the user who should have access from the node you are adding the permission for.</p>
+<p>If you want to limit access to a users friends the path could ook like this:</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">User</span> <span class="title">&gt; friends</span></span><br></pre></td></tr></table></figure>
+<p>Meaning that only if the current user is in the friends connection on the user being queried will the action be allowed.</p>
+<p>If only the author of a blog post should be able to delete it you would create a permission with the Delete action and the Related type and specify the following path:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Post</span> &gt; author</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>note: It is currently not possible to specify a path longer than 1 step. This limitation will be removed in the near future</p>
+</blockquote>
+<h2 id="Connections"><a href="#Connections" class="headerlink" title="Connections"></a>Connections</h2><ul>
+<li>synonym: relations</li>
+</ul>
+<p>If two things are related you can create a connection between them. If you are used to work with SQL databases you can think of a connection as a foreign key. Even if you are not used to work with databases I think you will find it straight forward to use connections in graph.cool.</p>
+<p>Let’s look at an example. If you are creating a blog you could have two models: User and Post. To keep track of who wrote what post you you could have a author connection from Post to User:</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Post &gt; author &gt; <span class="keyword">User</span></span><br></pre></td></tr></table></figure>
+<p>Connections always goes in bot directions, so you would also have a connection from User to Post:</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">User</span> <span class="title">&gt; posts</span> &gt; Post</span><br></pre></td></tr></table></figure>
+<p>As you can imagine the <code>author</code> connection will always contain the one User who wrote the Post. The <code>posts</code> connection on the other hand will contain all the Posts made by the User.</p>
+<p>Now, whenever you create a new post you will have to specify what User should be the author for that Post.</p>
+<p>connections are extremely useful when making <a href="simple-graphql-api.html#Queries">queries</a>. This is how you would get all Posts by a specific user:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;User(<span class="name">id:</span> <span class="string">"user1"</span>)&#123;name, posts&#123;title, text&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>returns:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attribute">User</span>: &#123; </span><br><span class="line">    name: <span class="string">"Johannes Schickling"</span>,</span><br><span class="line">    posts: [</span><br><span class="line">      &#123;title: <span class="string">"Getting Started with GraphQL"</span>, text: <span class="string">"..."</span>&#125;,</span><br><span class="line">      &#123;<span class="attribute">title</span>: <span class="string">"Using Relay with React Native"</span>, text: <span class="string">"..."</span>&#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Imagine you want to make it possible to like a Post. You can accomplish this very easily by creating a likedBy connection on Post:</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Post &gt; likedBy &gt; <span class="keyword">User</span></span><br></pre></td></tr></table></figure>
+<p>Now you can extend your query to include the names of Users who liked a Post:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;User(<span class="name">id:</span> <span class="string">"user1"</span>)&#123;name, posts&#123;title, text, likedBy&#123;name&#125;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+    <div class="bottom-nav">
+      
+      
+        <span>← <a href="getting-started.html">Getting Started</a></span>
+      
+      
+        <span style="float:right"><a href="relay-api.html">Relay API</a> →</span>
+      
+    </div>
+    <p class="edit-link">
+      <a href="https://github.com/graphcool/docs/tree/master/source/docs/data-model.md" target="_blank">Edit this page on GitHub</a>
+    </p>
+  </div>
+
+  <!-- mobile only -->
+  <div id="mobile-header">
+    <a class="menu-button"></a>
+    <a class="logo" href="/">
+      <img src="/logo/square.svg" />
+    </a>
+  </div>
+  <div id="mobile-shade"></div>
+
+</div>
+
+    <script src="/script/smooth-scroll.min.js"></script>
+    <script src="/script/main.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script>
+      // nectar ninja
+      // (function(){
+      //   var handle = '@meteorjs';
+      //   var a = document.createElement('script');
+      //   var m = document.getElementsByTagName('script')[0];
+      //   a.async = 1;
+      //   a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+      //   m.parentNode.insertBefore(a, m);
+      // })();
+
+      // search box
+      // ;(function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+      // (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+      // e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+      // })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+      // _st('install','h1KW95Mz3fNyf4cnqVtr','2.0.0');
+
+      // mobile
+      document.querySelector('#mobile-header .menu-button')
+        .addEventListener('click', function () {
+          document.body.classList.toggle('sidebar-open')
+        })
+      document.getElementById('mobile-shade').addEventListener('click', function () {
+        document.body.classList.remove('sidebar-open')
+      })
+
+      
+
+      
+    </script>
+  </body>
+</html>

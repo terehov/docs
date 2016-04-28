@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Security | Graphcool Docs</title>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/style/main.css">
+    <link href="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" rel='stylesheet' type='text/css'>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id="wrap">
+  <div id="header">
+    <div id="site-nav">
+  <div class="header-container">
+    <a class="logo" href="/"><img src="/logo/logodocs.svg"/></a>
+    <img class="search" src="/logo/search.svg" />
+    <input class="search-flex" placeholder="Search docs" type="text" />
+    <a class="header-links" href="https://graph.cool/" target="_blank">Website</a>
+    <a href="https://www.github.com/graphcool" target="_blank"><img class="github" src="/logo/github.svg" /></a>
+    <a class="header-links" href="https://github.com/graphcool/" target="_blank">Github</a>
+
+  </div>
+
+  
+  
+</div>
+
+  </div>
+  <div id="sidebar">
+    <ul class="categories">
+  
+    <li>
+      
+        <p>Documentation</p>
+      
+      <ul class="menu-root">
+        
+          
+          <li>
+            <a href="getting-started.html" class="sidebar-link">
+              Getting Started
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="data-model.html" class="sidebar-link">
+              Data Model
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="simple-graphql-api.html" class="sidebar-link">
+              Simple GraphQL API
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="relay-api.html" class="sidebar-link">
+              Relay API
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="webhooks.html" class="sidebar-link">
+              Webhooks
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="" class="sidebar-link current">
+              Security
+            </a>
+          </li>
+        
+      </ul>
+    </li>
+  
+    <li>
+      
+        <p>Resources</p>
+      
+      <ul class="menu-root">
+        
+          
+          <li>
+            <a href="../resources/index.html" class="sidebar-link">
+              Examples
+            </a>
+          </li>
+        
+      </ul>
+    </li>
+  
+</ul>
+
+  </div>
+  <div id="content">
+    <h1>Security</h1>
+    <p class="edit-discuss-links">
+      <a href="https://github.com/graphcool/docs/tree/master/source/docs/security.md" target="_blank">Edit on GitHub</a>
+    </p>
+    <p>Graph.cool has a strong security model built in. You can read about setting permissions on individual fields in the <a href="data-model.html#Permissions">Data Model</a> chapter.</p>
+<h2 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h2><p>Users in your graph.cool project are just regular data nodes of the built-in <a href="data-model.html#User-Model">User model</a>. This means that to sign up a new user you simple run the createUser mutation. The User model has one special mutation to support sign-in using email and password:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123;</span><br><span class="line">  <span class="selector-tag">signinUser</span>(<span class="attribute">email</span>: <span class="string">"email@domain.com"</span>, <span class="attribute">password</span>: <span class="string">"secret"</span>)&#123; token &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Passwords are stored in a cryptographically secure way. Running the signinMutation will look up the user with the given email and check that the password matches.</p>
+<blockquote>
+<p>note: graph.cool will support signin via thirdparty platforms such as facebook and twitter in the near future.</p>
+</blockquote>
+<p>The returned token uniquely identifies the user and must be supplied in the request whenever you query data or perform a mutation on behalf of the user.</p>
+<p>The token can be supplied in two ways: as an <code>Authorization</code> header or the <code>access_token</code> query parameter.</p>
+<p>If you use the query parameter the url would look like this:</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/api.graph.cool/simple</span><span class="regexp">/v1/</span>__YOUR_PROJECT_ID__?access_token=token</span><br></pre></td></tr></table></figure>
+<p>If you load this url in a browser it will render the same playground available in a dashboard, so that’s a quick way to test that everything is working correctly.</p>
+<p>If you provide the token in a header it should look like this:</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">Authorization:</span> <span class="class">Bearer </span>&#123;token&#125;</span><br></pre></td></tr></table></figure>
+<p>If you are using <a href="https://github.com/kadirahq/lokka" target="_blank" rel="external">Lokka</a> it could look like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Lokka &#125; <span class="keyword">from</span> <span class="string">'lokka'</span></span><br><span class="line"><span class="keyword">import</span> &#123; Transport &#125; <span class="keyword">from</span> <span class="string">'lokka-transport-http'</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">const</span> headers = &#123; Authorization: <span class="string">`Bearer <span class="subst">$&#123;token&#125;</span>`</span> &#125;</span><br><span class="line"><span class="keyword">const</span> transport = <span class="keyword">new</span> Transport(<span class="string">'https://api.graph.cool/simple/v1/__YOUR_PROJECT_ID__'</span>, &#123; headers &#125;)</span><br><span class="line"><span class="keyword">const</span> lokka = <span class="keyword">new</span> Lokka(&#123; transport &#125;)</span><br></pre></td></tr></table></figure>
+<p>If you are using <a href="https://facebook.github.io/relay/" target="_blank" rel="external">Relay</a> it could look like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; injectNetworkLayer, DefaultNetworkLayer &#125; <span class="keyword">from</span> <span class="string">'react-relay'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> headers = &#123; Authorization: <span class="string">`Bearer <span class="subst">$&#123;token&#125;</span>`</span> &#125;</span><br><span class="line"><span class="keyword">const</span> layer = <span class="keyword">new</span> DefaultNetworkLayer(<span class="string">'https://api.graph.cool/relay/v1/__YOUR_PROJECT_ID__'</span>, &#123; headers, retryDelays: [] &#125;)</span><br><span class="line">injectNetworkLayer(layer)</span><br></pre></td></tr></table></figure>
+
+    <div class="bottom-nav">
+      
+      
+        <span>← <a href="webhooks.html">Webhooks</a></span>
+      
+      
+        <span style="float:right"><a href="../resources/index.html">Examples</a> →</span>
+      
+    </div>
+    <p class="edit-link">
+      <a href="https://github.com/graphcool/docs/tree/master/source/docs/security.md" target="_blank">Edit this page on GitHub</a>
+    </p>
+  </div>
+
+  <!-- mobile only -->
+  <div id="mobile-header">
+    <a class="menu-button"></a>
+    <a class="logo" href="/">
+      <img src="/logo/square.svg" />
+    </a>
+  </div>
+  <div id="mobile-shade"></div>
+
+</div>
+
+    <script src="/script/smooth-scroll.min.js"></script>
+    <script src="/script/main.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script>
+      // nectar ninja
+      // (function(){
+      //   var handle = '@meteorjs';
+      //   var a = document.createElement('script');
+      //   var m = document.getElementsByTagName('script')[0];
+      //   a.async = 1;
+      //   a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+      //   m.parentNode.insertBefore(a, m);
+      // })();
+
+      // search box
+      // ;(function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+      // (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+      // e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+      // })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+      // _st('install','h1KW95Mz3fNyf4cnqVtr','2.0.0');
+
+      // mobile
+      document.querySelector('#mobile-header .menu-button')
+        .addEventListener('click', function () {
+          document.body.classList.toggle('sidebar-open')
+        })
+      document.getElementById('mobile-shade').addEventListener('click', function () {
+        document.body.classList.remove('sidebar-open')
+      })
+
+      
+
+      
+    </script>
+  </body>
+</html>

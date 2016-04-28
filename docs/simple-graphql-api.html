@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Simple GraphQL API | Graphcool Docs</title>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/style/main.css">
+    <link href="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" rel='stylesheet' type='text/css'>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id="wrap">
+  <div id="header">
+    <div id="site-nav">
+  <div class="header-container">
+    <a class="logo" href="/"><img src="/logo/logodocs.svg"/></a>
+    <img class="search" src="/logo/search.svg" />
+    <input class="search-flex" placeholder="Search docs" type="text" />
+    <a class="header-links" href="https://graph.cool/" target="_blank">Website</a>
+    <a href="https://www.github.com/graphcool" target="_blank"><img class="github" src="/logo/github.svg" /></a>
+    <a class="header-links" href="https://github.com/graphcool/" target="_blank">Github</a>
+
+  </div>
+
+  
+  
+</div>
+
+  </div>
+  <div id="sidebar">
+    <ul class="categories">
+  
+    <li>
+      
+        <p>Documentation</p>
+      
+      <ul class="menu-root">
+        
+          
+          <li>
+            <a href="getting-started.html" class="sidebar-link">
+              Getting Started
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="data-model.html" class="sidebar-link">
+              Data Model
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="" class="sidebar-link current">
+              Simple GraphQL API
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="relay-api.html" class="sidebar-link">
+              Relay API
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="webhooks.html" class="sidebar-link">
+              Webhooks
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="security.html" class="sidebar-link">
+              Security
+            </a>
+          </li>
+        
+      </ul>
+    </li>
+  
+    <li>
+      
+        <p>Resources</p>
+      
+      <ul class="menu-root">
+        
+          
+          <li>
+            <a href="../resources/index.html" class="sidebar-link">
+              Examples
+            </a>
+          </li>
+        
+      </ul>
+    </li>
+  
+</ul>
+
+  </div>
+  <div id="content">
+    <h1>Simple GraphQL API</h1>
+    <p class="edit-discuss-links">
+      <a href="https://github.com/graphcool/docs/tree/master/source/docs/simple-graphql-api.md" target="_blank">Edit on GitHub</a>
+    </p>
+    <p>graph.cool supports two different schemas: Simple GraphQL API and Relay API. If you are not using relay you should probably use the Simple GraphQL API.</p>
+<p>To experiment with the api you can go to the playground in the graph.cool dashboard as described in <a href="getting-started.html#Overview">getting started</a>.</p>
+<blockquote>
+<p>note: currently the playground only supports the relay api.</p>
+</blockquote>
+<h2 id="Queries"><a href="#Queries" class="headerlink" title="Queries"></a>Queries</h2><p>Reading data</p>
+<h3 id="List-all-by-type"><a href="#List-all-by-type" class="headerlink" title="List all by type"></a>List all by type</h3><p>To get all nodes of a specific type you can use one of the connections on the root query type. For example to list all nodes of the built-in User type you could do the following:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; allUsers&#123; name &#125; &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Get-specific-node"><a href="#Get-specific-node" class="headerlink" title="Get specific node"></a>Get specific node</h3><p>If you know the id of the User you want you can query for that specific node:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; User(<span class="name">id:</span> <span class="string">"the id"</span>)&#123; name &#125; &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Sub-nodes"><a href="#Sub-nodes" class="headerlink" title="Sub nodes"></a>Sub nodes</h3><p>The above query returned a User node and we specified in the query that we were interested in just the name from that node. We can use the same notation to retrieve fields from nodes in a connection from the current node. For example we could use this query to get a list of all of a users friends:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; User(<span class="name">id:</span> <span class="string">"the id"</span>)&#123; name, friends&#123; name &#125; &#125; &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h3><p>In the above examples allUsers and friends are connections containing many nodes. When querying a connection you can specify one or more filters to apply. For example you could do the following to retrieve all users from Denmark:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; allUsers(<span class="name">filter:</span> &#123; country: <span class="string">"Denmark"</span> &#125;)&#123; name &#125; &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Sort"><a href="#Sort" class="headerlink" title="Sort"></a>Sort</h3><p>You can also sort the nodes in a connection by a specific field:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; allUsers(<span class="name">orderBy:</span> age_DESC)&#123; name &#125; &#125;</span><br></pre></td></tr></table></figure>
+<p>Use field_DESC to sort in descending order and field_ASC to sort in ascending order.</p>
+<p>Integer and Float fields are sorted in numeric order and String fields are sorted in lexicographical order.</p>
+<h3 id="Skip-and-Take"><a href="#Skip-and-Take" class="headerlink" title="Skip and Take"></a>Skip and Take</h3><p>If you have many nodes it is best to retrieve only a small set at a time. To get the first 10 users you can make this query:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; allUsers(<span class="name">take:</span> <span class="number">10</span>)&#123; name &#125; &#125;</span><br></pre></td></tr></table></figure>
+<p>And to get the next 10:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; allUsers(<span class="name">skip:</span> <span class="number">10</span>, take: <span class="number">10</span>)&#123; name &#125; &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Mutations"><a href="#Mutations" class="headerlink" title="Mutations"></a>Mutations</h2><p>Storing data</p>
+<p>Mutations are the way you create and change data in your graph.cool database. The general form look like this:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> <span class="selector-tag">doSomething</span>(input) &#123; query &#125;</span><br></pre></td></tr></table></figure>
+<p><code>doSomething</code> is the name of the mutation you want to run. The following sections describe all the possible mutations.</p>
+<p><code>input</code> is the input parameters you want the mutation to use.</p>
+<p>All mutations return a node. For example the create mutation returns the newly created node. Use <code>query</code> to specify the fields you want returned from the mutation result. You always have to specify a query, so if you don’t care about the return value you can simply query the id like this: <code>{ id }</code></p>
+<h3 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h3><p>To create a new node you use the create mutation like this:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123; </span><br><span class="line">  <span class="selector-tag">createTodo</span>(<span class="attribute">task</span>: <span class="string">"Check out react native"</span>, <span class="attribute">complete</span>: False)</span><br><span class="line">  &#123;</span><br><span class="line">    id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The createTodo mutation returns the new Todo and you can query all fields including the automatically generated id.</p>
+<h3 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h3><p>To update a node you use the update mutation like this:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123; </span><br><span class="line">  <span class="selector-tag">updateTodo</span>(<span class="attribute">id</span>: <span class="string">"todoId"</span>, <span class="attribute">complete</span>: True)</span><br><span class="line">  &#123;</span><br><span class="line">    id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h3><p>To delete a node you use the delete mutation like this:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123; </span><br><span class="line">  <span class="selector-tag">deleteTodo</span>(<span class="attribute">id</span>: <span class="string">"todoId"</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Connections"><a href="#Connections" class="headerlink" title="Connections"></a>Connections</h3><p>For an introduction to connections see the section in Data Model on <a href="data-model.html#Connections">connections</a></p>
+<p>Recall our example blog application with A User model and a Post model.</p>
+<h4 id="Add-to-connection"><a href="#Add-to-connection" class="headerlink" title="Add to connection"></a>Add to connection</h4><p>You can add a node to a connection using the addToConnection mutation.</p>
+<p>To add a Post to a Users posts connection do the following:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123;</span><br><span class="line">  <span class="selector-tag">addTodoTopostsConnectionOnUser</span>(<span class="attribute">fromId</span>: <span class="string">"userId"</span>, <span class="attribute">toId</span>: <span class="string">"todoId"</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Remove-from-connection"><a href="#Remove-from-connection" class="headerlink" title="Remove from connection"></a>Remove from connection</h4><p>To remove a Post from a Users posts connection do the following:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123;</span><br><span class="line">  <span class="selector-tag">removePostFrompostsConnectionOnUser</span>(<span class="attribute">fromId</span>: <span class="string">"userId"</span>, <span class="attribute">toId</span>: <span class="string">"todoId"</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Creating-a-node"><a href="#Creating-a-node" class="headerlink" title="Creating a node"></a>Creating a node</h4><p>When creating a node you can add it to a connection by specifying the id of the node in the connection. For example this mutation will create a new Post and add it to the Users posts connection:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123;</span><br><span class="line">  <span class="selector-tag">createPost</span>(<span class="attribute">title</span>: <span class="string">"Working with mutations"</span>, <span class="attribute">authorId</span>: <span class="string">"user1"</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Updating-a-node"><a href="#Updating-a-node" class="headerlink" title="Updating a node"></a>Updating a node</h4><p>When updating a node you can change the connection it belongs to. For example to move a Post from one use to another:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mutation</span> &#123;</span><br><span class="line">  <span class="selector-tag">updatePost</span>(<span class="attribute">id</span>: <span class="string">"post1"</span>, <span class="attribute">authorId</span>: <span class="string">"user2"</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This will remove the post from user1 and add it to user2</p>
+
+    <div class="bottom-nav">
+      
+      
+        <span>← <a href="relay-api.html">Relay API</a></span>
+      
+      
+        <span style="float:right"><a href="webhooks.html">Webhooks</a> →</span>
+      
+    </div>
+    <p class="edit-link">
+      <a href="https://github.com/graphcool/docs/tree/master/source/docs/simple-graphql-api.md" target="_blank">Edit this page on GitHub</a>
+    </p>
+  </div>
+
+  <!-- mobile only -->
+  <div id="mobile-header">
+    <a class="menu-button"></a>
+    <a class="logo" href="/">
+      <img src="/logo/square.svg" />
+    </a>
+  </div>
+  <div id="mobile-shade"></div>
+
+</div>
+
+    <script src="/script/smooth-scroll.min.js"></script>
+    <script src="/script/main.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script>
+      // nectar ninja
+      // (function(){
+      //   var handle = '@meteorjs';
+      //   var a = document.createElement('script');
+      //   var m = document.getElementsByTagName('script')[0];
+      //   a.async = 1;
+      //   a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+      //   m.parentNode.insertBefore(a, m);
+      // })();
+
+      // search box
+      // ;(function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+      // (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+      // e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+      // })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+      // _st('install','h1KW95Mz3fNyf4cnqVtr','2.0.0');
+
+      // mobile
+      document.querySelector('#mobile-header .menu-button')
+        .addEventListener('click', function () {
+          document.body.classList.toggle('sidebar-open')
+        })
+      document.getElementById('mobile-shade').addEventListener('click', function () {
+        document.body.classList.remove('sidebar-open')
+      })
+
+      
+
+      
+    </script>
+  </body>
+</html>

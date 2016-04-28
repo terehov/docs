@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Webhooks | Graphcool Docs</title>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/style/main.css">
+    <link href="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" rel='stylesheet' type='text/css'>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id="wrap">
+  <div id="header">
+    <div id="site-nav">
+  <div class="header-container">
+    <a class="logo" href="/"><img src="/logo/logodocs.svg"/></a>
+    <img class="search" src="/logo/search.svg" />
+    <input class="search-flex" placeholder="Search docs" type="text" />
+    <a class="header-links" href="https://graph.cool/" target="_blank">Website</a>
+    <a href="https://www.github.com/graphcool" target="_blank"><img class="github" src="/logo/github.svg" /></a>
+    <a class="header-links" href="https://github.com/graphcool/" target="_blank">Github</a>
+
+  </div>
+
+  
+  
+</div>
+
+  </div>
+  <div id="sidebar">
+    <ul class="categories">
+  
+    <li>
+      
+        <p>Documentation</p>
+      
+      <ul class="menu-root">
+        
+          
+          <li>
+            <a href="getting-started.html" class="sidebar-link">
+              Getting Started
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="data-model.html" class="sidebar-link">
+              Data Model
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="simple-graphql-api.html" class="sidebar-link">
+              Simple GraphQL API
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="relay-api.html" class="sidebar-link">
+              Relay API
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="" class="sidebar-link current">
+              Webhooks
+            </a>
+          </li>
+        
+          
+          <li>
+            <a href="security.html" class="sidebar-link">
+              Security
+            </a>
+          </li>
+        
+      </ul>
+    </li>
+  
+    <li>
+      
+        <p>Resources</p>
+      
+      <ul class="menu-root">
+        
+          
+          <li>
+            <a href="../resources/index.html" class="sidebar-link">
+              Examples
+            </a>
+          </li>
+        
+      </ul>
+    </li>
+  
+</ul>
+
+  </div>
+  <div id="content">
+    <h1>Webhooks</h1>
+    <p class="edit-discuss-links">
+      <a href="https://github.com/graphcool/docs/tree/master/source/docs/webhooks.md" target="_blank">Edit on GitHub</a>
+    </p>
+    <p>graph.cool allows you to build very sophisticated applications without managing your own server. Sometimes you really need to do custom processing in response to data changes and that’s when webhooks come in handy.</p>
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><p>To setup a webhook go to your dashboard, click on the settings button in the lower left corner and enter the webhook url.</p>
+<p>graph.cool will now make a http POST request to your server whenever a node is created, updated and deleted as whell as when a node is added to or removed from a connection.</p>
+<h2 id="Payload-Format"><a href="#Payload-Format" class="headerlink" title="Payload Format"></a>Payload Format</h2><p>The request will include these headers:</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="symbol">'User</span>-<span class="type">Agent'</span>: <span class="symbol">'graph</span>.cool',</span><br><span class="line">  <span class="symbol">'Content</span>-<span class="type">Type'</span>: <span class="symbol">'application</span>/json'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And the body will look like this:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attribute">event</span>: <span class="string">'NODE_CREATED'</span>,</span><br><span class="line">  <span class="attribute">mutation_id</span>: unique id,</span><br><span class="line">  <span class="attribute">data</span>: &#123;</span><br><span class="line">    <span class="attribute">node</span>: node,</span><br><span class="line">    <span class="attribute">node_type</span>: nodeType</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attribute">event</span>: <span class="string">'NODE_UPDATED'</span>,</span><br><span class="line">  <span class="attribute">mutation_id</span>: unique id,</span><br><span class="line">  <span class="attribute">data</span>: &#123;</span><br><span class="line">    <span class="attribute">node</span>: node,</span><br><span class="line">    <span class="attribute">node_type</span>: nodeType</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attribute">event</span>: <span class="string">'NODE_DELETED'</span>,</span><br><span class="line">  <span class="attribute">mutation_id</span>: unique id,</span><br><span class="line">  <span class="attribute">data</span>: &#123;</span><br><span class="line">    <span class="attribute">node</span>: node,</span><br><span class="line">    <span class="attribute">node_type</span>: nodeType</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attribute">event</span>: <span class="string">'NODE_ADDED_TO_CONNECTION'</span>,</span><br><span class="line">  <span class="attribute">mutation_id</span>: unique id,</span><br><span class="line">  <span class="attribute">data</span>: &#123;</span><br><span class="line">    <span class="attribute">node</span>: node,</span><br><span class="line">    <span class="attribute">node_type</span>: nodeType,</span><br><span class="line">    <span class="attribute">connection_node</span>: connectionNode,</span><br><span class="line">    <span class="attribute">connection_node_type</span>: connectionNodeType,</span><br><span class="line">    <span class="attribute">connection_name</span>: connectionName</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attribute">event</span>: <span class="string">'NODE_REMOVED_FROM_CONNECTION'</span>,</span><br><span class="line">  <span class="attribute">mutation_id</span>: unique id,</span><br><span class="line">  <span class="attribute">data</span>: &#123;</span><br><span class="line">    <span class="attribute">node</span>: node,</span><br><span class="line">    <span class="attribute">node_type</span>: nodeType,</span><br><span class="line">    <span class="attribute">connection_node</span>: connectionNode,</span><br><span class="line">    <span class="attribute">connection_node_type</span>: connectionNodeType,</span><br><span class="line">    <span class="attribute">connection_name</span>: connectionName</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Debugging"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</h2><p>If you are having trouble setting up the webhook, <a href="http://requestb.in/" target="_blank" rel="external">request bin</a> is a very useful tool. It simply captures all the requests to a url and displays them including headers, body and everything. If that doesn’t help you are very welcome to contact us in the graph.cool <a href="https://slack.graph.cool/" target="_blank" rel="external">slack channel</a>. We love to help!</p>
+
+    <div class="bottom-nav">
+      
+      
+        <span>← <a href="simple-graphql-api.html">Simple GraphQL API</a></span>
+      
+      
+        <span style="float:right"><a href="security.html">Security</a> →</span>
+      
+    </div>
+    <p class="edit-link">
+      <a href="https://github.com/graphcool/docs/tree/master/source/docs/webhooks.md" target="_blank">Edit this page on GitHub</a>
+    </p>
+  </div>
+
+  <!-- mobile only -->
+  <div id="mobile-header">
+    <a class="menu-button"></a>
+    <a class="logo" href="/">
+      <img src="/logo/square.svg" />
+    </a>
+  </div>
+  <div id="mobile-shade"></div>
+
+</div>
+
+    <script src="/script/smooth-scroll.min.js"></script>
+    <script src="/script/main.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script>
+      // nectar ninja
+      // (function(){
+      //   var handle = '@meteorjs';
+      //   var a = document.createElement('script');
+      //   var m = document.getElementsByTagName('script')[0];
+      //   a.async = 1;
+      //   a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+      //   m.parentNode.insertBefore(a, m);
+      // })();
+
+      // search box
+      // ;(function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+      // (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+      // e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+      // })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+      // _st('install','h1KW95Mz3fNyf4cnqVtr','2.0.0');
+
+      // mobile
+      document.querySelector('#mobile-header .menu-button')
+        .addEventListener('click', function () {
+          document.body.classList.toggle('sidebar-open')
+        })
+      document.getElementById('mobile-shade').addEventListener('click', function () {
+        document.body.classList.remove('sidebar-open')
+      })
+
+      
+
+      
+    </script>
+  </body>
+</html>
